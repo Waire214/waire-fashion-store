@@ -1,5 +1,6 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
 import HomePageComponent from './pages/hompage/HomePageComponent';
-import { Routes, Route } from 'react-router-dom'
 
 const HatsPage = () => (
   <div>
@@ -10,11 +11,12 @@ const HatsPage = () => (
 function App() {
   return (
     <div>
-      <Routes>
-        <Route path='/' element={<HomePageComponent />} />
-        <Route path='/hats' element={ <HatsPage /> } />
-        <HomePageComponent />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path="/" element={<HomePageComponent/>} />
+          <Route path="/hats" element={<HatsPage />} />
+        </Routes>
+      </BrowserRouter>
     </div>
   );
 }
