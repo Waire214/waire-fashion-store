@@ -1,12 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import HomePageComponent from './pages/hompage/HomePageComponent';
+import ShopPageComponent from './pages/shop/ShopPageComponent';
 
-const HatsPage = () => (
-  <div>
-    <h1>HATS PAGE</h1>
-  </div>
-)
+import './App.css'
 
 function App() {
   return (
@@ -14,7 +11,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<HomePageComponent/>} />
-          <Route path="/hats" element={<HatsPage />} />
+          <Route path="/shop" element={<ShopPageComponent />} />
         </Routes>
       </BrowserRouter>
     </div>
