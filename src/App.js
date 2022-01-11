@@ -5,7 +5,7 @@ import ShopPageComponent from './pages/shop/ShopPage';
 import HeaderComponent from './components/header/HeaderComponent';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/SignInAndSignUpPage';
 
-import { auth } from './firebase/FirebaseUtil'
+import { auth, createUserProfileDocument } from './firebase/FirebaseUtil'
 
 import './App.css'
 import React from 'react';
@@ -24,8 +24,9 @@ class App extends React.Component {
   //one of thing for subscription in firebase. It won't remount...we want to 
   // when firebase realise somebody has logged in
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
+      createUserProfileDocument(user)
+      // this.setState({ currentUser: user });
       console.log(user);
     })
   }
