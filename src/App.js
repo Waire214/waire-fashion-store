@@ -18,19 +18,25 @@ class App extends React.Component {
        currentUser: null 
     }
   }
-
+// close subscription to avoid memory leaks
   unsubscribeFromAuth = null
 
   //one of thing for subscription in firebase. It won't remount...we want to 
-  // when firebase realise somebody has logged in
+  // to know when firebase realise somebody has logged in/out
   componentDidMount() {
-    this.unsubscribeFromAuth = auth.onAuthStateChanged(async user => {
-      createUserProfileDocument(user)
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth)
+
+        userRef.onSnapshot(snapShot => {
+          
+        })
+      }
       // this.setState({ currentUser: user });
-      console.log(user);
+      console.log(userAuth);
     })
   }
-
+// log user out
   componentWillUnmount() {
     this.unsubscribeFromAuth();
   }

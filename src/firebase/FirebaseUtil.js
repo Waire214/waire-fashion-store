@@ -11,11 +11,37 @@ const config = {
   appId: "1:884132011456:web:4cc543eb50a99cc567fc25",
   measurementId: "G-0PBB6YMP3V"
 };
-
+// queryReference - current place in the database
+// qr: no actual data
+// documentReference: used to perform CRU methods - set, get, update, delete - snapShot
+// collectionReference: querySnapshot
+// storing user profile in our firestore
+// if a user signs in
 export const createUserProfileDocument = async (userAuth, additionalData) => {
+  // if not signed in
   if(!userAuth) return;
 
-  console.log(firestore.doc('users/sajhhu3ew832w0912bj'));
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+  const snapShot = await userRef.get();
+  console.log(snapShot);
+
+  console.log(firestore.doc(`users/${userAuth.uid}`));
+
+  if(!snapShot.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+    try{
+      await userRef.set({
+        displayName, 
+        email,
+        createdAt,
+        ...additionalData
+      })
+    } catch(error) {
+      console.log('ERROR CREATING USER', error.message);
+    }
+  }
+  return userRef
 }
 
 firebase.initializeApp(config)
