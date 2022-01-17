@@ -21,16 +21,20 @@ export const createUserProfileDocument = async (userAuth, additionalData) => {
   // if not signed in
   if(!userAuth) return;
 
+  //documentReference to perform CRUD
   const userRef = firestore.doc(`users/${userAuth.uid}`);
-  const snapShot = await userRef.get();
-  console.log(snapShot);
 
-  console.log(firestore.doc(`users/${userAuth.uid}`));
+  // snapShot which holds the data
+  const snapShot = await userRef.get();
+  // console.log(snapShot);
+
+  // console.log(userRef);
 
   if(!snapShot.exists) {
     const { displayName, email } = userAuth;
     const createdAt = new Date();
     try{
+      // using the documentReference to perform CRUD
       await userRef.set({
         displayName, 
         email,
@@ -49,6 +53,7 @@ firebase.initializeApp(config)
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
+// sign in with Google
 const provider = new firebase.auth.GoogleAuthProvider();
 provider.setCustomParameters({ prompt: 'select_account' });
 export const signInWithGoogle = () => auth.signInWithPopup(provider);

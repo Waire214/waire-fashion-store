@@ -25,15 +25,27 @@ class App extends React.Component {
   // to know when firebase realise somebody has logged in/out
   componentDidMount() {
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      // if userAuth is not null i.e not signed out
       if (userAuth) {
+        // saving the state of the app
         const userRef = await createUserProfileDocument(userAuth)
 
+        // check if the snapshot has changed
+        // we will check the state of the user, check the first state
+        // => snapshot
         userRef.onSnapshot(snapShot => {
-          
+          this.setState({
+              currentUser: {
+                id: snapShot.id,
+                ...snapShot.data()
+              }
+          }, () => console.log(this.state.currentUser))
         })
+      }else{
+        // this.setState({ currentUser: user });
+        console.log(userAuth);
+        this.setState({currentUser: userAuth});
       }
-      // this.setState({ currentUser: user });
-      console.log(userAuth);
     })
   }
 // log user out
