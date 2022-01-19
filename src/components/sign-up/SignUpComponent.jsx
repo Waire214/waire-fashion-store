@@ -31,6 +31,7 @@ export class SignUpComponent extends React.Component {
             const { user } = await auth.createUserWithEmailAndPassword(email, password)
 
             await createUserProfileDocument(user, {displayName})
+            // to clear out the form
             this.setState({
                 displayName: '',
                 email: '',
