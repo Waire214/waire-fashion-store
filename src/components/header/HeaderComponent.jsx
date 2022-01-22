@@ -7,9 +7,12 @@ import { auth } from '../../firebase/FirebaseUtil'
 
 import { ReactComponent as Logo } from '../../assets/crown.svg'
 
+import CartIconComponent from '../cart-icon/CartIconComponent'
+import CartDropdownComponent from '../cart-dropdown/CartDropdownComponent'
+
 import './HeaderStyles.scss'
 
-const HeaderComponent = ({ currentUser }) => {
+const HeaderComponent = ({ currentUser, hidden }) => {
     return (
         <div className='header'>
             <Link className='logo-container' to='/'>
@@ -28,14 +31,26 @@ const HeaderComponent = ({ currentUser }) => {
                     :
                     <Link className='option' to='/signin'>SIGN IN</Link>
                 }
+                <CartIconComponent />
                 {/* <Link className='option' to="/shop"></Link> */}
             </div>
+            {
+                hidden ? null : <CartDropdownComponent />
+            }
         </div>
     )
 }
 
-const mapStateToProps = (state) => ({
-    currentUser: state.user.currentUser
+// state => root reducer
+
+// const mapStateToProps = ({state}) => ({
+//     currentUser: state.user.currentUser
+// })
+
+const mapStateToProps = ({user: { currentUser }, cart: { hidden }}) => ({
+    currentUser,
+    hidden
 })
+
 
 export default connect(mapStateToProps)(HeaderComponent)

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 import { connect } from 'react-redux';
 
@@ -30,7 +30,7 @@ class App extends React.Component {
   //one of thing for subscription in firebase. It won't remount...we want to 
   // to know when firebase realise somebody has logged in/out
   componentDidMount() {
-    const {setCurrentUser} = this.props
+    const {setCurrentUser} = this.props;
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       // if userAuth is not null i.e not signed out
       if (userAuth) {
@@ -71,7 +71,8 @@ class App extends React.Component {
           <Routes>
             <Route path="/" element={<HomePageComponent/>} />
             <Route path="/shop" element={<ShopPageComponent />} />
-            <Route path="/signin" element={<SignInAndSignUpPage />} />
+            <Route path="/signin" element={this.props.currentUser ? (<Navigate to="/" replace />) : (<SignInAndSignUpPage />)} />
+
           </Routes>
         </BrowserRouter>
       </div>
@@ -79,8 +80,12 @@ class App extends React.Component {
   }
 }
 
+const mapStateToProps = ({user}) => ({
+  currentUser: user.currentUser
+})
+
 const mapDispatchToProps = dispatch => ({
   //pass an action to every reducer
   setCurrentUser: user => dispatch(setCurrentUser(user))
 })
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
