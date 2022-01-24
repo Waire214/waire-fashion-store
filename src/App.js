@@ -71,6 +71,7 @@ class App extends React.Component {
           <Routes>
             <Route path="/" element={<HomePageComponent/>} />
             <Route path="/shop" element={<ShopPageComponent />} />
+            {/* use the current user props */}
             <Route path="/signin" element={this.props.currentUser ? (<Navigate to="/" replace />) : (<SignInAndSignUpPage />)} />
 
           </Routes>
@@ -80,6 +81,7 @@ class App extends React.Component {
   }
 }
 
+//state => root reducer
 const mapStateToProps = ({user}) => ({
   currentUser: user.currentUser
 })
